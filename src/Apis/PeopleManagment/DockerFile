@@ -14,4 +14,4 @@ WORKDIR /App
 ENV ASPNETCORE_ENVIRONMENT=Development
 COPY --from=build-env /App/out .
 
-ENTRYPOINT ["dotnet", "PeopleManagement.dll"]
+ENTRYPOINT ["dotnet", "PeopleManagment.dll"]

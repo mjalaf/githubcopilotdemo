@@ -41,6 +41,8 @@ env:
   CLUSTER_NAME: "RG-NW-TEST-001"
   DEPLOYMENT_MANIFEST_PATH: "src/Deployment/K8s/"
   DOCKER_FILE_PATH: "src/Apis/PeopleManagment/DockerFile"
+  SORUCE_PATH: "src/Apis/PeopleManagment/"
+
 
 jobs:
   buildImage:
@@ -61,6 +63,6 @@ jobs:
       # Builds and pushes an image up to your Azure Container Registry
       - name: Build and push image to ACR
         run: |
-          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.RESOURCE_GROUP }} -f ${{ env.DOCKER_FILE_PATH }}
+          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.RESOURCE_GROUP }} -f ${{ env.DOCKER_FILE_PATH }} ${{ env.SORUCE_PATH }}
 
  

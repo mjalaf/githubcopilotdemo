@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: peoplemanagementapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: peoplemanagementapi
+  template:
+    metadata:
+      labels:
+        app: peoplemanagementapi
+    spec:
+      containers:
+      - name: peoplemanagementapi
+        image: acrgaliciatest001.azurecr.io/peoplemanagementapi:v1
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080

@@ -40,9 +40,9 @@ env:
   RESOURCE_GROUP: "RG-NW-TEST-001"
   RESOURCE_GROUP_AKS: "RG-AKS-TEST-001"
   CLUSTER_NAME: "aks-test-001"
-  DEPLOYMENT_MANIFEST_PATH: "src/Deployment/K8s/"
+  DEPLOYMENT_MANIFEST_PATH: "src/Deployment/K8s/peoplemanagement-deployment.yml"
   DOCKER_FILE_PATH: "src/Apis/PeopleManagment/DockerFile"
-  SORUCE_PATH: "src/Apis/PeopleManagment/peoplemanagement-deployment.yml"
+  SORUCE_PATH: "src/Apis/PeopleManagment/"
   REPO_VERSION: "v1"
 jobs:
   buildImage:

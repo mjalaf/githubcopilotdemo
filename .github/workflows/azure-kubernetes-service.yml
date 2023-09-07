@@ -38,12 +38,12 @@ env:
   AZURE_CONTAINER_REGISTRY: "acrgaliciatest001"
   CONTAINER_NAME: "peoplemanagementapi"
   RESOURCE_GROUP: "RG-NW-TEST-001"
-  CLUSTER_NAME: "RG-NW-TEST-001"
+  RESOURCE_GROUP_AKS: "RG-AKS-TEST-001"
+  CLUSTER_NAME: "aks-test-001"
   DEPLOYMENT_MANIFEST_PATH: "src/Deployment/K8s/"
   DOCKER_FILE_PATH: "src/Apis/PeopleManagment/DockerFile"
-  SORUCE_PATH: "src/Apis/PeopleManagment/"
-
-
+  SORUCE_PATH: "src/Apis/PeopleManagment/peoplemanagement-deployment.yml"
+  REPO_VERSION: "v1"
 jobs:
   buildImage:
     permissions:
@@ -63,6 +63,45 @@ jobs:
       # Builds and pushes an image up to your Azure Container Registry
       - name: Build and push image to ACR
         run: |
-          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.RESOURCE_GROUP }} -f ${{ env.DOCKER_FILE_PATH }} ${{ env.SORUCE_PATH }}
+          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ env.REPO_VERSION }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.RESOURCE_GROUP }} -f ${{ env.DOCKER_FILE_PATH }} ${{ env.SORUCE_PATH }}
 
- 
+  deploy:
+    permissions:
+      actions: read
+      contents: read
+      id-token: write
+    runs-on: ubuntu-latest
+    needs: [buildImage]
+    steps:
+      # Checks out the repository this file is in
+      - uses: actions/checkout@v3
+  
+      # Logs in with your Azure credentials
+      - name: Azure login
+        uses: azure/login@v1.4.6
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+  
+      # Use kubelogin to configure your kubeconfig for Azure auth
+      - name: Set up kubelogin for non-interactive login
+        uses: azure/use-kubelogin@v1
+        with:
+          kubelogin-version: 'v0.0.25'
+  
+      # Retrieves your Azure Kubernetes Service cluster's kubeconfig file
+      - name: Get K8s context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: ${{ env.RESOURCE_GROUP_AKS }}
+          cluster-name: ${{ env.CLUSTER_NAME }}
+          admin: 'false'
+          use-kubelogin: 'true'
+  
+      # Deploys application based on given manifest file
+      - name: Deploys application
+        uses: Azure/k8s-deploy@v4
+        with:
+          action: deploy
+          manifests: ${{ env.DEPLOYMENT_MANIFEST_PATH }}
+          images: |
+            ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ env.REPO_VERSION }}

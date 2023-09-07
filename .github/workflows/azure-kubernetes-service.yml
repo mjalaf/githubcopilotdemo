@@ -35,7 +35,7 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_CONTAINER_REGISTRY: "acrgaliciatest001.azurecr.io"
+  AZURE_CONTAINER_REGISTRY: "acrgaliciatest001"
   CONTAINER_NAME: "peoplemanagementapi"
   RESOURCE_GROUP: "RG-NW-TEST-001"
   CLUSTER_NAME: "RG-NW-TEST-001"

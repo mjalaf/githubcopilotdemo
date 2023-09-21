@@ -1,0 +1,6 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: people-config
+data:
+  KV_URL: https://kv-poc-dev-eastus2-001.vault.azure.net/

@@ -21,3 +21,9 @@ spec:
             cpu: "500m"
         ports:
         - containerPort: 8080
+        env:
+        - name: KEYVAULT_URL
+          valueFrom:
+            configMapKeyRef:
+              name: people-config
+              key: KV_URL

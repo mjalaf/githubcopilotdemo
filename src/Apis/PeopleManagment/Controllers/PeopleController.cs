@@ -79,7 +79,7 @@ namespace Apis.PeopleManagment.Controllers
             return Ok(person);
         }
 
-        [HttpGet("{city}")]
+        [HttpGet("city/{city}")]
         public async Task<IActionResult> Get(string city)
         {
             var people = await _peopleProvider.GetPeopleByCity(city);

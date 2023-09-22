@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: people-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: peoplemanagement.internal.az
+    http:
+      paths:
+      - pathType: Prefix
+        backend:
+          service:
+            name: people-internal-service
+            port:
+              number: 8080
+        path: /

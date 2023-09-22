@@ -1,0 +1,9 @@
+controller:
+  replicaCount: 1
+  ingressClass: nginx
+  setAsDefaultIngress: true
+  enableCustomResources: false
+  service:
+    # create: true
+    annotations:
+      service.beta.kubernetes.io/azure-load-balancer-internal: "true"

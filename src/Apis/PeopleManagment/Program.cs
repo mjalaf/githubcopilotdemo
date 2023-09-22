@@ -22,9 +22,9 @@ string? connectionString = builder.Configuration.GetConnectionString("DefaultCon
 
 #if !DEBUG
     string keyVaultUrl = Environment.GetEnvironmentVariable("KEYVAULT_URL") ?? "https://default-keyvault-url.com";
-    console.log($"Get secret {connectionString} from {keyVaultUrl}");
     SecretClient _secretClient = new SecretClient(new Uri(keyVaultUrl), new DefaultAzureCredential());
-    connectionString = await _secretClient.GetSecretAsync(connectionString);
+    var secret = await _secretClient.GetSecretAsync(connectionString);
+    connectionString = secret.Value.Value;
 #endif
 
 builder.Services.AddDbContext<PeopleManagementContext>(options =>

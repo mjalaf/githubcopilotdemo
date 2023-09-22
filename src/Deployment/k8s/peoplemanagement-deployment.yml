@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: peoplemanagementapi
-        image: acrgaliciatest001.azurecr.io/peoplemanagementapi:v1
+        image: acrgaliciatest002.azurecr.io/peoplemanagementapi:v1
         resources:
           limits:
             memory: "128Mi"

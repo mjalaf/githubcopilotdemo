@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
-    azure.workload.identity/client-id: <insert clientId>
+    azure.workload.identity/client-id: 261f4156-ffc0-496e-87ca-be38b87c6b3b
   labels:
     azure.workload.identity/use: "true"
   name: workload-sa

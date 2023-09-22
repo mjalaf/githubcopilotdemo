@@ -4,9 +4,10 @@ using Apis.PeopleManagment.Interfaces;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 // Add services to the container.
 
@@ -18,19 +19,19 @@ builder.Services.AddSwaggerGen();
 // Add dependency Injection to my Controllers
 builder.Services.AddScoped<IPeopleProvider, PeopleManagementRepository>();
  
-string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+string? connectionStringSecretName = builder.Configuration.GetConnectionString("DefaultConnection");
+string keyVaultUrl = Environment.GetEnvironmentVariable("KEYVAULT_URL") ?? "https://default-keyvault-url.com";
 
-#if !DEBUG
-    string keyVaultUrl = Environment.GetEnvironmentVariable("KEYVAULT_URL") ?? "https://default-keyvault-url.com";
-    SecretClient _secretClient = new SecretClient(new Uri(keyVaultUrl), new DefaultAzureCredential());
-    var secret = await _secretClient.GetSecretAsync(connectionString);
-    connectionString = secret.Value.Value;
-#endif
+SecretClient _secretClient = new SecretClient(new Uri(keyVaultUrl), new DefaultAzureCredential());
+var secret = await _secretClient.GetSecretAsync(connectionStringSecretName);
+String? connectionString = secret.Value.Value;
 
 builder.Services.AddDbContext<PeopleManagementContext>(options =>
     options.UseSqlServer(connectionString));
 
 var app = builder.Build();
+
+app.Logger.LogInformation("Service Started");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -3,32 +3,35 @@
 
 import axios from 'axios';
 
-export default axios.create({
-    baseURL: "http://localhost:8080/api",
+const api = axios.create({
+    baseURL: "https://apim-poc-dev-eastus2-001.azure-api.net/api/People",
     headers: {
-        "Content-type": "application/json"
+        "Content-type": "application/json",
+        "PeopleManagement-Key": "f1272ab646884ac3b2ea31a40e7ee236"
     }
 });
+
+export default api;
 
 // create the methos to call the backend
 
 export const getAllPeople = () => {
-    return http.get("/people");
+    return api.get("/People");
 }
 
 export const getPersonById = id => {
-    return http.get(`/people/${id}`);
+    return api.get(`/People/${id}`);
 }
 
 export const createPerson = data => {
-    return http.post("/people", data);
+    return api.post("/People", data);
 }
 
 export const updatePerson = (id, data) => {
-    return http.put(`/people/${id}`, data);
+    return api.put(`/People/${id}`, data);
 }
 
 export const deletePerson = id => {
-    return http.delete(`/people/${id}`);
+    return api.delete(`/People/${id}`);
 }
 

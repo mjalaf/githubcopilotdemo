@@ -34,9 +34,17 @@ namespace Apis.PeopleManagement.Repositories
         public async Task<Person> UpdatePerson(int id, Person person)
         {
             var personToUpdate = await GetPerson(id);
+
+            if (personToUpdate != null)
+            {
+                _context.Entry(personToUpdate).State = EntityState.Detached;
+            }
+
             _context.People.Update(person);
+            _context.Entry(person).State = EntityState.Modified;
+
             await _context.SaveChangesAsync();
-            return personToUpdate;
+            return person;
         }
 
         public async Task<Person> DeletePerson(int id)

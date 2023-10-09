@@ -4,7 +4,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: "https://apim-poc-dev-eastus2-001.azure-api.net/api/People",
+    baseURL: "https://apim-poc-dev-eastus2-001.azure-api.net/api",
     headers: {
         "Content-type": "application/json",
         "PeopleManagement-Key": "f1272ab646884ac3b2ea31a40e7ee236"

@@ -25,6 +25,7 @@ class PeopleManagement extends Component {
         };
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.refreshList = this.refreshList.bind(this);
    }
    
 
@@ -179,7 +180,8 @@ class PeopleManagement extends Component {
 
                 </div>
               </div>
-              <button type="submit">Submit</button>
+              <button type="submit">Save</button>
+              <button onClick={this.refreshList}>New</button>
             </form>
             <table>
               <thead>
